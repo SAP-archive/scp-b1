@@ -1,0 +1,5 @@
+---
+applications:
+- name: cfdemosummit18
+  memory: 64m
+  instances: 1
