@@ -1,6 +1,12 @@
 {
-     "ServiceLayer" :  { 
-        "Server": "",
+    "B1":{
+        "Server":   "",
+        "User":     "manager",
+        "Password": "1234",
+        "CompanyDB":"SBODEMOUS"
+    },
+    "ServiceLayer" :  { 
+        
         "Port" : "50001",
         "Path" : "/b1s/v1/"
     }
