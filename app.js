@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 
-var sl = require('./modules/ServiceLayer'); 
+var sl = require('./modules/serviceLayer'); 
 var slSession = null;
 var output = null;
 
@@ -31,9 +31,6 @@ app.get('/GetItems', function (req, res) {
     }
   });
 });
-
-
-
 
 app.get('/', function (req, res) {
   output = 'Hello B1 Summit!! \n'
