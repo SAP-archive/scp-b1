@@ -35,6 +35,8 @@ app.get('/GetItems', function (req, res) {
 
 app.get('/GetEnv', function (req, res) {
   output.sl = slSession
+  output.instance = process.env.CF_INSTANCE_INDEX + 1 
+  output.env = process.env.HOME;
   res.send(output);
 });
 
