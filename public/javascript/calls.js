@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	//Get Items List
+	//Get Items List from SL
 	$.get("/GetItems", function (json) {
 		displayItems(json);
 	});
@@ -7,6 +7,12 @@ $(document).ready(function () {
 	$.get("/GetEnv", function (json) {
 		displayEnvironment(json);
 	});
+	//Get Items from Cloud Platform DB
+	$.get("/SelectItems", function (json) {
+		displayItemsSQL(json);
+	});
+
+
 });
 
 function displayItems(json) {
@@ -30,4 +36,18 @@ function displayEnvironment(json) {
 	$("#env").append(
 		"<div>" + "<strong>SL SessionID:</strong> " + json.sl.SessionId + "</div>" +
 		"<div>" + "<strong>Served by server #</strong> " + json.instance + "</div>");
+}
+
+function displayItemsSQL(items) {
+	$("#resultTableSQL tbody").empty();
+	//Lines	
+	for (var i = 0; i < items.length; i++) {
+		$("#resultTableSQL tbody").append(
+			"<tr>" +
+			"<td>" + (i + 1) + "</td>" +
+			"<td>" + items[i].code + "</td>" +
+			"<td>" + items[i].name + "</td>" +
+			"<td>" + items[i].integrated + "</td>"+
+			"</tr>");
+	}
 }

@@ -32,7 +32,9 @@
   },
   "homepage": "https://github.com/Ralphive/cfDemoSummit18#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "pg": "^7.4.1",
     "request": "^2.83.0"
   }
 }
