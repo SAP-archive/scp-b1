@@ -9,6 +9,9 @@ module.exports = {
     },
     Insert: function (data, response) {
         return (Insert(data, response));
+    },
+    Update: function (item, response) {
+        return (Insert(item, response));
     }
 }
 
@@ -56,6 +59,19 @@ function Insert(data, callback) {
 
     var query = 'INSERT INTO items(code,name,integrated) VALUES($1, $2, $3)';
     pgClient.query(query, [data.code,data.name,false], function (err,result){
+        if (err) {
+            callback(err)
+        }else{
+            callback(null, result)
+        }
+    });
+}
+
+function Update(item, callback) {
+    console.log('PG Updating Table data '+ JSON.stringify(data))
+
+    var query = 'UPDATE items SET integrated = true WHERE name = $1';
+    pgClient.query(query, [item], function (err,result){
         if (err) {
             callback(err)
         }else{

@@ -6,8 +6,12 @@ module.exports = {
     },
     GetItems: function (options, response) {
         return (GetItems(options, response));
+    },
+    PostItems: function (options, body, response) {
+        return (PostItems(options, body, response));
     }
 }
+
 
 //Load Local configuration file
 var cfg = require('../config.json');
@@ -62,6 +66,31 @@ function GetItems(options, callback) {
 
     //Make Request
     req.get(options, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            body = JSON.parse(body);
+            delete body["odata.metadata"];
+            return callback(null, body);
+        } else {
+            return callback(error);
+        }
+    });
+}
+
+function PostItems(options, body, callback) {
+
+    var uri = SLServer + "Items"
+    var resp = {}
+
+    //Set HTTP Request Options
+    options.uri = uri
+    body.ItemsGroupCode = ItemGroup
+    options.body = JSON.stringify(body);
+
+    console.log("Posting Items to SL on " + uri);
+    console.log("Item body: \n" + body);
+
+    //Make Request
+    req.post(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             body = JSON.parse(body);
             delete body["odata.metadata"];

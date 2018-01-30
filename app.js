@@ -79,6 +79,35 @@ app.get('/GetEnv', function (req, res) {
   res.send(output);
 });
 
+//Synchronize Local DB with B1 SL
+app.post('/Synchronize', function (req, res) {
+  var options = { headers: { 'Cookie': slSession.cookie } };
+
+  db.Select(function (error, resp) {
+    if (error) {
+      console.log('Cant Select rows')
+      console.log(error);
+    } else {
+      for (var i = 0; i < resp.length; i++) {
+        var body = { ItemCode: resp.code, ItemName: resp.name }
+        console.log("Sync Item "+ resp.code)
+        sl.PostItems(options, body, function (err, resp) {
+          if (!err) {
+            db.Update(body.ItemCode, function (err, resp) {
+              if (!err) {
+                console.log("Item Synchronized");
+              } else {
+                console.error(err);
+              }
+            })
+          }
+        })
+      }
+    }
+  });
+});
+
+
 // Root path to retrieve Index.html
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'views/index.html'));
