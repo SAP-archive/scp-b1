@@ -1,5 +1,4 @@
 /** Persistence Layer (PostGree) library */
-
 module.exports = {
     Connect: function (response) {
         return (Connect(response));
@@ -11,7 +10,7 @@ module.exports = {
         return (Insert(data, response));
     },
     Update: function (item, response) {
-        return (Insert(item, response));
+        return (Update(item, response));
     }
 }
 
@@ -25,7 +24,7 @@ const pgClient = new Client({
 
 function Connect(callback) {
     console.log('PG Connecting')
-    var query = 'CREATE TABLE items (code varchar(256) NOT NULL, name varchar(256) NOT NULL, integrated boolean NOT NULL)'
+    var query = 'DROP TABLE ITEMS; CREATE TABLE items (code varchar(256) NOT NULL, name varchar(256) NOT NULL, integrated boolean NOT NULL)'
     pgClient.connect(function (err) {
         console.log('PG Connected')
         if (err) {
@@ -68,9 +67,9 @@ function Insert(data, callback) {
 }
 
 function Update(item, callback) {
-    console.log('PG Updating Table data '+ JSON.stringify(data))
+    console.log('PG Updating Table data '+ JSON.stringify(item))
 
-    var query = 'UPDATE items SET integrated = true WHERE name = $1';
+    var query = 'UPDATE items SET integrated = true WHERE code = $1';
     pgClient.query(query, [item], function (err,result){
         if (err) {
             callback(err)

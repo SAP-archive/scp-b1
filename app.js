@@ -37,7 +37,7 @@ db.Connect(function (error) {
 //Endpoint to POST items to Service Layer
 app.post('/InsertItem', function (req, res) {
   db.Insert(req.body, function (error, resp) {
-    res.redirect('views/index.html');
+    res.redirect('/');
   });
 });
 
@@ -80,20 +80,22 @@ app.get('/GetEnv', function (req, res) {
 });
 
 //Synchronize Local DB with B1 SL
-app.post('/Synchronize', function (req, res) {
+app.post('/Sync', function (req, res) {
   var options = { headers: { 'Cookie': slSession.cookie } };
 
-  db.Select(function (error, resp) {
+  console.log("LETS SYNC ITEMS");
+  db.Select(function (error, rows) {
     if (error) {
       console.log('Cant Select rows')
       console.log(error);
     } else {
-      for (var i = 0; i < resp.length; i++) {
-        var body = { ItemCode: resp.code, ItemName: resp.name }
-        console.log("Sync Item "+ resp.code)
-        sl.PostItems(options, body, function (err, resp) {
+      console.log("HERE ARE ITEMS TO SYNC" + JSON.stringify(rows));
+      for (var i = 0; i < rows.length; i++) {
+        var body = { ItemCode: rows[i].code, ItemName: rows[i].name }
+        console.log("Sync Item " + rows[i].code)
+        sl.PostItems(options, body, function (err, slItem) {
           if (!err) {
-            db.Update(body.ItemCode, function (err, resp) {
+            db.Update(slItem.ItemCode, function (err, resp) {
               if (!err) {
                 console.log("Item Synchronized");
               } else {
@@ -103,6 +105,7 @@ app.post('/Synchronize', function (req, res) {
           }
         })
       }
+      res.redirect('/');
     }
   });
 });

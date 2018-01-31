@@ -19,6 +19,7 @@ var SLServer =   process.env.B1_SERVER_ENV+":"
                 +process.env.B1_SLPATH_ENV;
 //Load Node Modules
 var req = require('request') // HTTP Client
+var ItemGroupCode = 103; //Just for filtering
 
 function Connect(callback) {
     var uri = SLServer + "Login"
@@ -56,7 +57,7 @@ function Connect(callback) {
 function GetItems(options, callback) {
     var uri = SLServer + "Items?$select=ItemCode,ItemName,"
         + "QuantityOnStock,QuantityOrderedFromVendors,QuantityOrderedByCustomers"
-        + "&$filter=ItemsGroupCode%20eq%20103"
+        + "&$filter=ItemsGroupCode%20eq%20"+ItemGroupCode
     var resp = {}
 
     //Set HTTP Request Options
@@ -83,19 +84,21 @@ function PostItems(options, body, callback) {
 
     //Set HTTP Request Options
     options.uri = uri
-    body.ItemsGroupCode = ItemGroup
+    body.ItemsGroupCode = ItemGroupCode
     options.body = JSON.stringify(body);
 
     console.log("Posting Items to SL on " + uri);
-    console.log("Item body: \n" + body);
+    console.log("Item body: \n" + JSON.stringify(body));
 
     //Make Request
     req.post(options, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
+        if (!error && response.statusCode == 201) {
             body = JSON.parse(body);
             delete body["odata.metadata"];
+            console.log("ITEM CREATED - " + JSON.stringify(body))
             return callback(null, body);
         } else {
+            console.error("Can't Create SL ITEM" + error);
             return callback(error);
         }
     });

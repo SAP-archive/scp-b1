@@ -2,7 +2,7 @@
 applications:
 - name: cfdemosummit18
   memory: 64m
-  instances: 1
+  instances: 5
   buildpack: https://github.com/cloudfoundry/nodejs-buildpack.git
   env:
     B1_SLPORT_ENV: 50001

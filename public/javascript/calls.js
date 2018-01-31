@@ -12,6 +12,15 @@ $(document).ready(function () {
 		displayItemsSQL(json);
 	});
 
+	$('#sync').on('click', function () {
+		$('#sync i').addClass("fa-spin");
+		$('#sync').prop('disabled', true)
+		$.post("/Sync", function () {
+			$('#sync i').removeClass("fa-spin");
+			$('#sync').prop('disabled', false)
+			location.reload();
+		});
+	});
 
 });
 
@@ -47,7 +56,7 @@ function displayItemsSQL(items) {
 			"<td>" + (i + 1) + "</td>" +
 			"<td>" + items[i].code + "</td>" +
 			"<td>" + items[i].name + "</td>" +
-			"<td>" + items[i].integrated + "</td>"+
+			"<td>" + items[i].integrated + "</td>" +
 			"</tr>");
 	}
 }
