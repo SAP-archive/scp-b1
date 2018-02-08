@@ -16,9 +16,10 @@ $(document).ready(function () {
 		$('#sync i').addClass("fa-spin");
 		$('#sync').prop('disabled', true)
 		$.post("/Sync", function () {
-			$('#sync i').removeClass("fa-spin");
-			$('#sync').prop('disabled', false)
-			location.reload();
+			setTimeout(function(){
+				$('#sync i').removeClass("fa-spin");
+				$('#sync').prop('disabled', false);
+				location.reload()}, 1500)
 		});
 	});
 
