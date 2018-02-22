@@ -24,7 +24,7 @@ const pgClient = new Client({
 
 function Connect(callback) {
     console.log('PG Connecting')
-    var query = 'DROP TABLE ITEMS; CREATE TABLE items (code varchar(256) NOT NULL, name varchar(256) NOT NULL, integrated boolean NOT NULL)'
+    var query = 'CREATE TABLE IF NOT EXISTS items (code varchar(256) NOT NULL, name varchar(256) NOT NULL, integrated boolean NOT NULL)'
     pgClient.connect(function (err) {
         console.log('PG Connected')
         if (err) {
