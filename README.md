@@ -15,5 +15,8 @@ The idea of this application is based in the [beer-list](https://github.com/mari
 There are 4 steps organized in branches in this repository. The step_4 is synchronized with the master branch.
 Clone this repository and proceed to [Step 1](http://github.com/Ralphive/cfDemoSummit18/tree/step_1) for further instruction.
 
+## Alternative Implementation
+There is also available a [.Net version](https://github.com/B1SA/cfNetDemo) of this app.
+
 ## License
 cfDemoSummit18  is released under the terms of the MIT license. See [LICENSE](LICENSE) for more information or see https://opensource.org/licenses/MIT.
