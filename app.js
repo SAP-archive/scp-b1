@@ -13,7 +13,12 @@ app.use(bodyParser.json());
 /* Load Local Modules */
 var sl = require('./modules/serviceLayer');
 var db = require('./modules/persist');
-var slSession = null;
+var slOptions = {
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  }
+}
 var output = {};
 
 //First Thing, coonect to SL and store a SessionID
@@ -24,9 +29,12 @@ if (!process.env.APIHUB) {
       console.error(error);
       return; // Abort Execution
     } else {
-      slSession = resp;
+      slOptions.headers["Cookie"] = resp.cookie;
     }
   });
+} else {
+  slOptions.headers["demoDB"] = process.env.B1_COMP_ENV
+  slOptions.headers["APIKey"] = process.env.APIKey
 }
 
 db.Connect(function (error) {
@@ -58,10 +66,8 @@ app.get('/SelectItems', function (req, res) {
 
 
 //EndPoint To retrieve Items from Service Layer
-app.get('/GetItems', function (req, res) {
-  var options = { headers: { 'Cookie': slSession.cookie } };
-
-  sl.GetItems(options, function (error, resp) {
+app.get('/GetItems', function (req, res) { 
+  sl.GetItems(slOptions, function (error, resp) {
     if (error) {
       console.error("Can't get Items from Service Layer - " + error);
       res.send(error);
