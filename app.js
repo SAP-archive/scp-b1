@@ -17,15 +17,17 @@ var slSession = null;
 var output = {};
 
 //First Thing, coonect to SL and store a SessionID
-sl.Connect(function (error, resp) {
-  if (error) {
-    console.error("Can't Connect to Service Layer");
-    console.error(error);
-    return; // Abort Execution
-  } else {
-    slSession = resp;
-  }
-});
+if (!process.env.APIHUB) {
+  sl.Connect(function (error, resp) {
+    if (error) {
+      console.error("Can't Connect to Service Layer");
+      console.error(error);
+      return; // Abort Execution
+    } else {
+      slSession = resp;
+    }
+  });
+}
 
 db.Connect(function (error) {
   if (error) {
