@@ -80,7 +80,7 @@ app.get('/GetItems', function (req, res) {
 
 //EndPoint to Retrieve Environment Variables
 app.get('/GetEnv', function (req, res) {
-  output.sl = slSession
+  output.sl = slOptions.headers.Cookie || "API Biz Hub"
   output.instance = 0;
   output.instance = (process.env.CF_INSTANCE_INDEX * 1) + 1
   output.env = process.env.HOME;
