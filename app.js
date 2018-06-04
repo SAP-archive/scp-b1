@@ -89,8 +89,6 @@ app.get('/GetEnv', function (req, res) {
 
 //Synchronize Local DB with B1 SL
 app.post('/Sync', function (req, res) {
-  var options = { headers: { 'Cookie': slSession.cookie } };
-
   console.log("LETS SYNC ITEMS");
   db.Select(function (error, rows) {
     if (error) {
@@ -98,10 +96,12 @@ app.post('/Sync', function (req, res) {
       console.log(error);
     } else {
       console.log("HERE ARE ITEMS TO SYNC" + JSON.stringify(rows));
+      var items = 0
       for (var i = 0; i < rows.length; i++) {
         var body = { ItemCode: rows[i].code, ItemName: rows[i].name }
         console.log("Sync Item " + rows[i].code)
-        sl.PostItems(options, body, function (err, slItem) {
+        sl.PostItems(slOptions, body, function (err, slItem) {
+          items++;
           if (!err) {
             db.Update(slItem.ItemCode, function (err, resp) {
               if (!err) {
@@ -110,10 +110,12 @@ app.post('/Sync', function (req, res) {
                 console.error(err);
               }
             })
+            if (items == rows.length){
+              res.redirect('/');
+            }
           }
         })
       }
-      res.redirect('/');
     }
   });
 });
