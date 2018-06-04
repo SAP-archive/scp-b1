@@ -13,19 +13,29 @@ app.use(bodyParser.json());
 /* Load Local Modules */
 var sl = require('./modules/serviceLayer');
 var db = require('./modules/persist');
-var slSession = null;
+var slOptions = {
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  }
+}
 var output = {};
 
 //First Thing, coonect to SL and store a SessionID
-sl.Connect(function (error, resp) {
-  if (error) {
-    console.error("Can't Connect to Service Layer");
-    console.error(error);
-    return; // Abort Execution
-  } else {
-    slSession = resp;
-  }
-});
+if (!process.env.APIHUB) {
+  sl.Connect(function (error, resp) {
+    if (error) {
+      console.error("Can't Connect to Service Layer");
+      console.error(error);
+      return; // Abort Execution
+    } else {
+      slOptions.headers["Cookie"] = resp.cookie;
+    }
+  });
+} else {
+  slOptions.headers["demoDB"] = process.env.B1_COMP_ENV
+  slOptions.headers["APIKey"] = process.env.APIKey
+}
 
 db.Connect(function (error) {
   if (error) {
@@ -56,10 +66,8 @@ app.get('/SelectItems', function (req, res) {
 
 
 //EndPoint To retrieve Items from Service Layer
-app.get('/GetItems', function (req, res) {
-  var options = { headers: { 'Cookie': slSession.cookie } };
-
-  sl.GetItems(options, function (error, resp) {
+app.get('/GetItems', function (req, res) { 
+  sl.GetItems(slOptions, function (error, resp) {
     if (error) {
       console.error("Can't get Items from Service Layer - " + error);
       res.send(error);
@@ -72,7 +80,7 @@ app.get('/GetItems', function (req, res) {
 
 //EndPoint to Retrieve Environment Variables
 app.get('/GetEnv', function (req, res) {
-  output.sl = slSession
+  output.sl = slOptions.headers.Cookie || "API Biz Hub"
   output.instance = 0;
   output.instance = (process.env.CF_INSTANCE_INDEX * 1) + 1
   output.env = process.env.HOME;
@@ -81,8 +89,6 @@ app.get('/GetEnv', function (req, res) {
 
 //Synchronize Local DB with B1 SL
 app.post('/Sync', function (req, res) {
-  var options = { headers: { 'Cookie': slSession.cookie } };
-
   console.log("LETS SYNC ITEMS");
   db.Select(function (error, rows) {
     if (error) {
@@ -90,10 +96,12 @@ app.post('/Sync', function (req, res) {
       console.log(error);
     } else {
       console.log("HERE ARE ITEMS TO SYNC" + JSON.stringify(rows));
+      var items = 0
       for (var i = 0; i < rows.length; i++) {
         var body = { ItemCode: rows[i].code, ItemName: rows[i].name }
         console.log("Sync Item " + rows[i].code)
-        sl.PostItems(options, body, function (err, slItem) {
+        sl.PostItems(slOptions, body, function (err, slItem) {
+          items++;
           if (!err) {
             db.Update(slItem.ItemCode, function (err, resp) {
               if (!err) {
@@ -102,10 +110,12 @@ app.post('/Sync', function (req, res) {
                 console.error(err);
               }
             })
+            if (items == rows.length){
+              res.redirect('/');
+            }
           }
         })
       }
-      res.redirect('/');
     }
   });
 });

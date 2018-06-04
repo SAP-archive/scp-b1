@@ -44,7 +44,7 @@ function displayItems(json) {
 
 function displayEnvironment(json) {
 	$("#env").append(
-		"<div>" + "<strong>SL SessionID:</strong> " + json.sl.SessionId + "</div>" +
+		"<div>" + "<strong>SL SessionID:</strong> " + json.sl + "</div>" +
 		"<div>" + "<strong>Served by server #</strong> " + json.instance + "</div>");
 }
 

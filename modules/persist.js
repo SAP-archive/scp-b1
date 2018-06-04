@@ -14,17 +14,20 @@ module.exports = {
     }
 }
 
-var { Client } = require('pg') //PostgreSQL npm package
-var vcap_services = JSON.parse(process.env.VCAP_SERVICES)
-var uri = vcap_services.postgresql[0].credentials.uri
-console.log("Postgree URI - " + uri)
-const pgClient = new Client({
-    connectionString: uri,
-})
+const pg = require("pg")
+
+var credentials = null;
+var vcap = null;
+if (process.env.VCAP_SERVICES) {
+    console.log("VCAP Services Found")
+    vcap = JSON.parse(process.env.VCAP_SERVICES);
+    credentials = { connectionString: vcap.postgresql[0].credentials.uri }
+}
+var pgClient = new pg.Client(credentials)
 
 function Connect(callback) {
     console.log('PG Connecting')
-    var query = 'DROP TABLE ITEMS; CREATE TABLE items (code varchar(256) NOT NULL, name varchar(256) NOT NULL, integrated boolean NOT NULL)'
+    var query = 'CREATE TABLE IF NOT EXISTS items (code varchar(256) NOT NULL, name varchar(256) NOT NULL, integrated boolean NOT NULL)'
     pgClient.connect(function (err) {
         console.log('PG Connected')
         if (err) {

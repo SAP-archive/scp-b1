@@ -98,7 +98,10 @@ function PostItems(options, body, callback) {
             console.log("ITEM CREATED - " + JSON.stringify(body))
             return callback(null, body);
         } else {
-            console.error("Can't Create SL ITEM" + error);
+            if (!error){
+                error = "Can't Create SL ITEM"
+                console.error(body)
+            }
             return callback(error);
         }
     });
