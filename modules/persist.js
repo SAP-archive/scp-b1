@@ -27,7 +27,7 @@ var pgClient = new pg.Client(credentials)
 
 function Connect(callback) {
     console.log('PG Connecting')
-    var query = 'CREATE TABLE IF NOT EXISTS items (code varchar(256) NOT NULL, name varchar(256) NOT NULL, integrated boolean NOT NULL)'
+    var query = 'CREATE TABLE IF NOT EXISTS itemsscp (code varchar(256) NOT NULL, name varchar(256) NOT NULL, integrated boolean NOT NULL)'
     pgClient.connect(function (err) {
         console.log('PG Connected')
         if (err) {
@@ -46,7 +46,7 @@ function Connect(callback) {
 }
 
 function Select(callback) {
-    var query = 'SELECT code, name, integrated FROM items where integrated = false'
+    var query = 'SELECT code, name, integrated FROM itemsscp where integrated = false'
     pgClient.query(query, function (err, result) {
         if (err) {
             callback(err)
@@ -59,7 +59,7 @@ function Select(callback) {
 function Insert(data, callback) {
     console.log('PG Inserting Table data '+ JSON.stringify(data))
 
-    var query = 'INSERT INTO items(code,name,integrated) VALUES($1, $2, $3)';
+    var query = 'INSERT INTO itemsscp(code,name,integrated) VALUES($1, $2, $3)';
     pgClient.query(query, [data.code,data.name,false], function (err,result){
         if (err) {
             callback(err)
@@ -72,7 +72,7 @@ function Insert(data, callback) {
 function Update(item, callback) {
     console.log('PG Updating Table data '+ JSON.stringify(item))
 
-    var query = 'UPDATE items SET integrated = true WHERE code = $1';
+    var query = 'UPDATE itemsscp SET integrated = true WHERE code = $1';
     pgClient.query(query, [item], function (err,result){
         if (err) {
             callback(err)
