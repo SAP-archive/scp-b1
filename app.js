@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 /* Load Local Modules */
 var sl = require('./modules/serviceLayer');
 
+//Default SL options on requests
 var slOptions = {
   headers: {
     "Content-Type": "application/json",
