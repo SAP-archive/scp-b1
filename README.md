@@ -30,7 +30,7 @@ $ cf set-env scp-b1 B1_COMP_ENV <B1 Company DB>
 ```sh
 $ cf set-env scp-b1 B1_SERVER_ENV http://hanab1
 $ cf set-env scp-b1 B1_SLPORT_ENV 50001
-$ cf set-env scp-b1 B1_SLPATH_ENV /b1s/v1
+$ cf set-env scp-b1 B1_SLPATH_ENV /b1s/v1/      
 $ cf set-env scp-b1 B1_USER_ENV manager
 $ cf set-env scp-b1 B1_PASS_ENV 1234
 $ cf set-env scp-b1 B1_COMP_ENV SBODEMOUS
