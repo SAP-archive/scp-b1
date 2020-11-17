@@ -21,7 +21,7 @@ var vcap = null;
 if (process.env.VCAP_SERVICES) {
     console.log("VCAP Services Found")
     vcap = JSON.parse(process.env.VCAP_SERVICES);
-    credentials = { connectionString: vcap.postgresql[0].credentials.uri }
+    credentials = { connectionString: vcap['postgresql-db'][0].credentials.uri }
 }
 var pgClient = new pg.Client(credentials)
 
