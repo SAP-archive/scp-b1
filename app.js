@@ -22,7 +22,7 @@ var slOptions = {
 var output = {};
 
 //First Thing, coonect to SL and store a SessionID
-if (!process.env.APIHUB) {
+if (!process.env.APIKey) {
   sl.Connect(function (error, resp) {
     if (error) {
       console.error("Can't Connect to Service Layer");
