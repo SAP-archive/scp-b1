@@ -1,4 +1,7 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/scp-b1)](https://api.reuse.software/info/github.com/SAP-samples/scp-b1)
 [![License: Apache2](https://img.shields.io/badge/License-Apache2-green.svg)](https://opensource.org/licenses/Apache-2.0)
+![CI](https://github.com/SAP-samples/scp-b1/workflows/CI/badge.svg)
+
 # scp-b1
 [![SAP](https://i.imgur.com/kkQTp3m.png)](https://cloudplatform.sap.com)
 [![SAP](https://i.imgur.com/2iFZdxN.png)](https://cloudplatform.sap.com)
@@ -18,7 +21,7 @@ This application is based in the [beer-list](https://github.com/mariantalla/beer
 ### Deployment
 Clone this repository
 ```sh
-git clone https://github.com/B1SA/scp-b1.git
+git clone https://github.com/SAP-Samples/scp-b1.git
 ```
 From the root directory, using the [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) push your app to the SAP CP Cloud Foundry
 ```sh
