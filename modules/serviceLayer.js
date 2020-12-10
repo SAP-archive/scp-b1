@@ -41,7 +41,7 @@ let Connect = function () {
                 }
             })
             .catch((err) => {
-                console.error("Error calling ByD -" + err)
+                console.error("Error calling B1 -" + err)
                 reject(new Error(err));
             })
     })
