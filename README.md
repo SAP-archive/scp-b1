@@ -1,39 +1,47 @@
+[![License: Apache2](https://img.shields.io/badge/License-Apache2-green.svg)](https://opensource.org/licenses/Apache-2.0)
 # scp-b1
 [![SAP](https://i.imgur.com/kkQTp3m.png)](https://cloudplatform.sap.com)
+[![SAP](https://i.imgur.com/2iFZdxN.png)](https://cloudplatform.sap.com)
 
-This is a sample step by step guide of how to build cloud applications based on [Cloud Foundry](https://www.cloudfoundry.org/). 
-It is coded in [NodeJ](https://nodejs.org/en/) and also makes use of [PostGreSQL](https://cloudplatform.sap.com/dmp/capabilities/us/product/PostgreSQL-on-SAP-Cloud-Platform/) available in the [SAP Cloud Platform](https://cloudplatform.sap.com). 
-It is integrated with [SAP Business One](https://www.sap.com/uk/products/business-one.html) using the [Service Layer](https://www.youtube.com/watch?v=zaF_i7x9-s0&list=PLMdHXbewhZ2QsgYSICRQuoL8lkoEHjNzS&index=22) to list and update Items. 
-The idea of this application is based in the [beer-list](https://github.com/mariantalla/beer-list) app.
+## Description
+This is a sample applications based on [Cloud Foundry](https://www.cloudfoundry.org/). It is coded in [NodeJ](https://nodejs.org/en/) and integrated with [SAP Business One](https://www.sap.com/uk/products/business-one.html) using the [OData Services](https://odata.org) of the [SAP Business One Service Layer](https://www.youtube.com/watch?v=zaF_i7x9-s0) to list Items. 
 
+This application is based in the [beer-list](https://github.com/mariantalla/beer-list) app.
 
-## Pre Requisites
-* A free trial account on  [SAP Cloud Platform](https://developers.sap.com/tutorials/cp-trial-quick-onboarding.html) with **Cloud Foundry Trial** initialized
-* Install and configure the [Cloud Foundry Command Line Interface (CLI)](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/75125ef1e60e490e91eb58fe48c0f9e7.html#loio4ef907afb1254e8286882a2bdef0edf4) on your machine   
-* A SAP Business One Enviroment with Service Layer 
+[Live Version](https://scp-b1.cfapps.eu10.hana.ondemand.com/)
 
-### Installation
+## Requirements
+*  [Install the Cloud Foundry CLI](https://developers.sap.com/tutorials/cp-cf-download-cli.html)
+*  [Learn the Fundamentals of SCP Cloud Foundry](https://developers.sap.com/tutorials/cp-cf-fundamentals.html)  
+* A SAP Business One Enviroment with Service Layer or [SAP API Hub Account](https://api.sap.com/)
+
+### Deployment
+Clone this repository
+```sh
+git clone https://github.com/B1SA/scp-b1.git
+```
 From the root directory, using the [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) push your app to the SAP CP Cloud Foundry
 ```sh
-$ cf push --random-route
+cf push --random-route
 ```
 Then set the Environment Variables accordingly
+
+**Example with your own B1**
 ```sh
-$ cf set-env scp-b1 B1_SERVER_ENV http://<your b1 server>
-$ cf set-env scp-b1 B1_SLPORT_ENV <Service Layer Port>
-$ cf set-env scp-b1 B1_SLPATH_ENV <Service Layer path>
-$ cf set-env scp-b1 B1_USER_ENV <B1 User Name>
-$ cf set-env scp-b1 B1_PASS_ENV <B1 User Password>
-$ cf set-env scp-b1 B1_COMP_ENV <B1 Company DB>
+cf set-env scp-b1 B1_SERVER_ENV http://hanab1
+cf set-env scp-b1 B1_SLPORT_ENV 50001
+cf set-env scp-b1 B1_SLPATH_ENV /b1s/v2/      
+cf set-env scp-b1 B1_USER_ENV manager
+cf set-env scp-b1 B1_PASS_ENV 1234
+cf set-env scp-b1 B1_COMP_ENV SBODEMOUS
 ```
-**Example**
+
+**Example with [API Hub](https://api.sap.com/api/Items/resource)**
 ```sh
-$ cf set-env scp-b1 B1_SERVER_ENV http://hanab1
-$ cf set-env scp-b1 B1_SLPORT_ENV 50001
-$ cf set-env scp-b1 B1_SLPATH_ENV /b1s/v1/      
-$ cf set-env scp-b1 B1_USER_ENV manager
-$ cf set-env scp-b1 B1_PASS_ENV 1234
-$ cf set-env scp-b1 B1_COMP_ENV SBODEMOUS
+cf set-env scp-b1 B1_SERVER_ENV https://sandbox.api.sap.com
+cf set-env scp-b1 B1_SLPATH_ENV /sapb1/b1s/v2/     
+cf set-env scp-b1 B1_COMP_ENV SBODEMOUS
+cf set-env scp-b1 APIKey <Your API Key>
 ```
 
 Restart your application (so it can read the new environment variables)
@@ -43,8 +51,10 @@ $ cf restart scp-b1
 
 Access the app from the URL route showed in the terminal
 
-## Alternative Implementation
-There is also available a [.Net version](https://github.com/B1SA/cfNetDemo) of this app.
+## Support and Contributions  
+This repository is provided "as-is". With no Warranty or support
+
+If you have questions, please ask.
 
 ## License
-scp-b1 is released under the terms of the MIT license. See [LICENSE](LICENSE) for more information or see https://opensource.org/licenses/MIT.
+Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSES/Apache-2.0.txt) file.
