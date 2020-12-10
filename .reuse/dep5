@@ -1,0 +1,10 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: b1-scp
+Upstream-Contact: Ralphive <>
+Source: https://github.com/SAP-Samples/b1-scp
+
+# Sample paragraph, commented out:
+#
+Files: * 
+Copyright: 2020 SAP SE or an SAP affiliate company and b1-scp contributors
+License: Apache-2.0
