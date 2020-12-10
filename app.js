@@ -7,7 +7,9 @@ var app = express();
 app.use(express.static('public'));
 
 //To Support body on post requests
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(bodyParser.json());
 
 /* Load Local Modules */
@@ -27,18 +29,18 @@ if (!process.env.APIKey) {
   sl.Connect().then((resp) => {
     slOptions.headers["Cookie"] = resp.cookie;
   })
-  .catch(error => {
-    console.error("Can't Connect to Service Layer");
-    console.error(error);
-    return; // Abort Execution
-  }) 
+    .catch(error => {
+      console.error("Can't Connect to Service Layer");
+      console.error(error);
+      return; // Abort Execution
+    })
 } else {
   slOptions.headers["demoDB"] = process.env.B1_COMP_ENV
   slOptions.headers["APIKey"] = process.env.APIKey
 }
 
 //EndPoint To retrieve Items from Service Layer
-app.get('/GetItems', function (req, res) { 
+app.get('/GetItems', function (req, res) {
   sl.GetItems(slOptions, function (error, resp) {
     if (error) {
       console.error("Can't get Items from Service Layer - " + error);
