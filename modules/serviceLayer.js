@@ -19,31 +19,31 @@ let Connect = function () {
             method: "POST",
             baseURL: process.env.B1_SERVER_ENV,
             port: process.env.B1_SLPORT_ENV,
-            url: process.env.B1_SLPATH_ENV+"Login",
-            data:  {
+            url: process.env.B1_SLPATH_ENV + "Login",
+            data: {
                 UserName: process.env.B1_USER_ENV,
                 Password: process.env.B1_PASS_ENV,
                 CompanyDB: process.env.B1_COMP_ENV
-                }
+            }
         }
 
         axios.request(options).then((response) => {
-            console.log(`SL Response: is ${response.status} - ${response.statusText}`)
-            if (response.statusCode < 200 || response.statusCode >= 300) {
-                return reject(
-                    new Error(`${response.statusCode}: ${response.req.getHeader("host")} ${response.req.path}`)
-                );
-            } else {                
-                resolve({
-                    cookie: response.headers['set-cookie'],
-                    SessionId: response.data.SessionId
-                })
-            }
-        })
-        .catch((err) => {
-            console.error("Error calling ByD -" + err)
-            reject(new Error(err));
-        })
+                console.log(`SL Response: is ${response.status} - ${response.statusText}`)
+                if (response.statusCode < 200 || response.statusCode >= 300) {
+                    return reject(
+                        new Error(`${response.statusCode}: ${response.req.getHeader("host")} ${response.req.path}`)
+                    );
+                } else {
+                    resolve({
+                        cookie: response.headers['set-cookie'],
+                        SessionId: response.data.SessionId
+                    })
+                }
+            })
+            .catch((err) => {
+                console.error("Error calling ByD -" + err)
+                reject(new Error(err));
+            })
     })
 }
 
@@ -54,27 +54,27 @@ let GetItems = function (slOptions) {
             method: "GET",
             baseURL: process.env.B1_SERVER_ENV,
             port: process.env.B1_SLPORT_ENV,
-            url: process.env.B1_SLPATH_ENV+"Items",
+            url: process.env.B1_SLPATH_ENV + "Items",
             headers: slOptions.headers,
-            params:{
-                $select: "ItemCode,ItemName,QuantityOnStock,QuantityOrderedFromVendors,"+
-                        "QuantityOrderedByCustomers"
+            params: {
+                $select: "ItemCode,ItemName,QuantityOnStock,QuantityOrderedFromVendors," +
+                    "QuantityOrderedByCustomers"
             }
         }
 
         axios.request(options).then((response) => {
-            console.log(`SL Response: is ${response.status} - ${response.statusText}`)
-            if (response.statusCode < 200 || response.statusCode >= 300) {
-                return reject(
-                    new Error(`${response.statusCode}: ${response.req.getHeader("host")} ${response.req.path}`)
-                );
-            } else {                
-                resolve(response.data)
-            }
-        })
-        .catch((err) => {
-            console.error("Error calling B1 -" + err)
-            reject(new Error(err));
-        })
+                console.log(`SL Response: is ${response.status} - ${response.statusText}`)
+                if (response.statusCode < 200 || response.statusCode >= 300) {
+                    return reject(
+                        new Error(`${response.statusCode}: ${response.req.getHeader("host")} ${response.req.path}`)
+                    );
+                } else {
+                    resolve(response.data)
+                }
+            })
+            .catch((err) => {
+                console.error("Error calling B1 -" + err)
+                reject(new Error(err));
+            })
     })
 }
