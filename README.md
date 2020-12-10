@@ -46,7 +46,7 @@ cf set-env scp-b1 APIKey <Your API Key>
 
 Restart your application (so it can read the new environment variables)
 ```sh
-cf restart scp-b1
+$ cf restart scp-b1
 ```
 
 Access the app from the URL route showed in the terminal
