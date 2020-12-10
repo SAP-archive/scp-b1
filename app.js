@@ -41,15 +41,14 @@ if (!process.env.APIKey) {
 
 //EndPoint To retrieve Items from Service Layer
 app.get('/GetItems', function (req, res) {
-  sl.GetItems(slOptions, function (error, resp) {
-    if (error) {
-      console.error("Can't get Items from Service Layer - " + error);
-      res.send(error);
-    } else {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(resp);
-    }
-  });
+  sl.GetItems(slOptions).then((resp) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(resp);
+  })
+  .catch(error => {
+    console.error("Can't get Items from Service Layer - " + error);
+    res.send(error);
+  })
 });
 
 //EndPoint to Retrieve Environment Variables
