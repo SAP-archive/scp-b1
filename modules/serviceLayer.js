@@ -1,9 +1,10 @@
 // Service Layer module to interact with B1 Data */
 // Server Configuration and User Credentials set in environment variables
+const path = require('path');
 
 module.exports = {
-    Connect: function (response) {
-        return (Connect(response));
+    Connect: function () {
+        return Connect();
     },
     GetItems: function (options, response) {
         return (GetItems(options, response));
@@ -21,41 +22,43 @@ var SLServer =   process.env.B1_SERVER_ENV+":"
 
 //Load Node Modules
 var req = require('request') // HTTP Client
+const axios = require('axios')
+
 var ItemGroupCode = 103; //Just for filtering
 
 //Connect to Service Layer
-function Connect(callback) {
-    var uri = SLServer + "Login"
-    var resp = {}
-
-    //B1 Login Credentials
-    var data = {
+let Connect = function () {
+    return new Promise(function (resolve, reject) {
+        const options = {
+            method: "POST",
+            baseURL: process.env.B1_SERVER_ENV,
+            port: process.env.B1_SLPORT_ENV,
+            url: process.env.B1_SLPATH_ENV+"Login",
+            data:  {
                 UserName: process.env.B1_USER_ENV,
                 Password: process.env.B1_PASS_ENV,
                 CompanyDB: process.env.B1_COMP_ENV
-                };
-
-    //Set HTTP Request Options
-    options = { uri: uri, body: JSON.stringify(data) }
-
-    console.log("Connecting to SL on " + uri);
-    
-    //Make Request
-    req.post(options, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-
-            body = JSON.parse(body);
-            console.log(body)
-
-            resp.cookie = response.headers['set-cookie']
-            resp.SessionId = body.SessionId;
-
-            return callback(null, resp);
-        } else {
-            return callback(error);
+                }
         }
-    });
 
+        axios.request(options).then((response) => {
+            console.log(`SL Response: is ${response.status} - ${response.statusText}`)
+            if (response.statusCode < 200 || response.statusCode >= 300) {
+                return reject(
+                    new Error(`${response.statusCode}: ${response.req.getHeader("host")} ${response.req.path}`)
+                );
+            } else {                
+                resolve({
+                    cookie: response.headers['set-cookie'],
+                    SessionId: response.data.SessionId
+                })
+            }
+        })
+        .catch((err) => {
+            console.error("Error calling ByD -" + err)
+            reject(new Error(err));
+        })
+    })
 }
 
 //Retrieve Items

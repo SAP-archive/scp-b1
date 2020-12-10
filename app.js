@@ -24,15 +24,14 @@ var output = {};
 
 //First Thing, coonect to SL and store a SessionID
 if (!process.env.APIKey) {
-  sl.Connect(function (error, resp) {
-    if (error) {
-      console.error("Can't Connect to Service Layer");
-      console.error(error);
-      return; // Abort Execution
-    } else {
-      slOptions.headers["Cookie"] = resp.cookie;
-    }
-  });
+  sl.Connect().then((resp) => {
+    slOptions.headers["Cookie"] = resp.cookie;
+  })
+  .catch(error => {
+    console.error("Can't Connect to Service Layer");
+    console.error(error);
+    return; // Abort Execution
+  }) 
 } else {
   slOptions.headers["demoDB"] = process.env.B1_COMP_ENV
   slOptions.headers["APIKey"] = process.env.APIKey
