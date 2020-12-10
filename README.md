@@ -8,7 +8,7 @@ This is a sample applications based on [Cloud Foundry](https://www.cloudfoundry.
 
 This application is based in the [beer-list](https://github.com/mariantalla/beer-list) app.
 
-[Live Version](https://scp-b1.cfapps.eu10.hana.ondemand.com/)
+🔵 [Live Version](https://scp-b1-boring-puku-zo.cfapps.eu10.hana.ondemand.com)
 
 ## Requirements
 *  [Install the Cloud Foundry CLI](https://developers.sap.com/tutorials/cp-cf-download-cli.html)
@@ -46,7 +46,7 @@ cf set-env scp-b1 APIKey <Your API Key>
 
 Restart your application (so it can read the new environment variables)
 ```sh
-$ cf restart scp-b1
+cf restart scp-b1
 ```
 
 Access the app from the URL route showed in the terminal
