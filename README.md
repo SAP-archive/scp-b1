@@ -1,3 +1,10 @@
+# Deprecation Notice
+
+This public repository is read-only and no longer maintained.
+
+![](https://img.shields.io/badge/STATUS-NOT%20CURRENTLY%20MAINTAINED-red.svg?longCache=true&style=flat)
+
+---
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/scp-b1)](https://api.reuse.software/info/github.com/SAP-samples/scp-b1)
 [![License: Apache2](https://img.shields.io/badge/License-Apache2-green.svg)](https://opensource.org/licenses/Apache-2.0)
 ![CI](https://github.com/SAP-samples/scp-b1/workflows/CI/badge.svg)
